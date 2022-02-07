@@ -44,4 +44,5 @@ Route::group(['prefix'=>'admin' , 'middleware'=> ['isAdmin', 'auth', 'PreventBac
 Route::group(['prefix'=>'user' , 'middleware'=> ['isUser', 'auth', 'PreventBackHistory']], function() {
 
     Route::get('user', [UserController::class, 'index'])->name('user.index');
+    // usersss
 });
