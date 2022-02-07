@@ -37,6 +37,7 @@ Route::group(['prefix'=>'admin' , 'middleware'=> ['isAdmin', 'auth', 'PreventBac
     // users
     Route::get('active-user', [AdminUserController::class, 'index'])->name('admin.active-user');
     Route::post('active-user', [AdminUserController::class, 'store'])->name('admin.adduser');
+    // Route::put('edit_user/{id}', [AdminUserController::class, 'update']);
 
 });
 

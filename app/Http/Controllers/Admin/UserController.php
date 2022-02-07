@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -34,11 +35,16 @@ class UserController extends Controller
         $user->department = $request->department;
 
         if($user->save()) {
-            return redirect()->back()->with('success', 'User created');
+            return redirect()->back()->with('user_added', 'User created');
         }
         else {
-            return redirect()->back()->with('error', 'Email exist');
+            // return redirect()->back()->with('email', 'Email exist');
+            // return redirect()->with('error_added', 'The error message here!');
+            return redirect()->route('active-user')->with('error_added', 'Email exist');
         }     
+
+        
+    
        
     }
 }

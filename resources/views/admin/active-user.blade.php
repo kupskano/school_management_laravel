@@ -154,10 +154,99 @@
                       <td>{{$user->referrence_number}}</td>
                       <td>{{$user->user_status}}</td>
                       <td>
-                        <button class="btn btn-success btn-sm">Edit <i class="fas fa-pencil-alt fa-sm"></i></button>
-                        <button class="btn btn-danger btn-sm">Disable <i class="fas fa-trash-alt fa-sm"></i></button>
+                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal-{{$user->id}}">View <i class="fas fa-eye fa-sm"></i></button>
+                        <button class="btn btn-danger btn-sm disable_user" value="{{$user->id}}">Disable <i class="fas fa-trash-alt fa-sm"></i></button>
                     </td>
                     </tr>
+                       <!-- Modal -->
+                       <div class="modal fade" id="exampleModal-{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit {{$user->name}}`s details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+
+                            <input type="hidden" name="id" value="{{$user->id}}">
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Full name') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="name" type="text" value="{{$user->name}}" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" readonly autocomplete="name" placeholder="required" autofocus>
+    
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('E-Mail Address') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="email" type="email" value="{{$user->email}}" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  placeholder="required" readonly autocomplete="email">
+    
+                                    {{-- @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror --}}
+                                    @if($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                  @endif
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="department" type="text" value="{{$user->department}}" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}"  placeholder="required" readonly autocomplete="department">
+    
+                                    {{-- @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror --}}
+                                    @if($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                  @endif
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="referrence_number" class="col-md-4 col-form-label text-md-end">{{ __('Referrence number') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="referrence_number" type="text" value="{{$user->referrence_number}}" class="form-control @error('referrence_number') is-invalid @enderror" name="referrence_number" value="{{ old('referrence_number') }}"  placeholder="required" readonly autocomplete="department">
+    
+                                    {{-- @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror --}}
+                                    @if($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                  @endif
+                                </div>
+                            </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success">Edit <i class="fas fa-pencil-alt fa-sm"></i></button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
                      @endforeach
                     </tbody>
                   </table>
@@ -171,11 +260,11 @@
                         {{-- <div class="card-header">{{ __('Register') }}</div> --}}
         
                         <div class="card-body">
-                            @if(Session::get('success'))
+                            {{-- @if(Session::get('success'))
                             <div class="alert alert-success thisadd">
                                 {{Session::get('success')}}
                             </div>
-                                @endif
+                                @endif --}}
                           
                             <form method="POST" action="{{ route('admin.adduser') }}">
                                 @csrf
@@ -232,9 +321,13 @@
                                 <div class="row mb-3">
                                     <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
         
-                                    <div class="col-md-6">
+                                    <div class="input-group col-md-6">
                                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="required" required autocomplete="new-password">
-        
+                                        <span class="input-group-append">
+                                          <button  class="btn btn-outline-secondary" type="button">
+                                              <i class="fas fa-eye" id="togglePassword" style=" "></i>
+                                          </button>
+                                      </span>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -244,12 +337,29 @@
                                 </div>
         
                                 <div class="row mb-3">
-                                    <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                                    <label for="password_confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
         
-                                    <div class="col-md-6">
-                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="required" required autocomplete="new-password">
-                                    </div>
+                                    <div class="input-group col-md-6">
+                                        <input id="password_confirm" type="password" class="form-control" name="password_confirmation" placeholder="required" required autocomplete="new-password">
+                                        <span class="input-group-append">
+                                          <button  class="btn btn-outline-secondary" type="button">
+                                              <i class="fas fa-eye" id="togglePasswordConfirm" style=" "></i>
+                                          </button>
+                                      </span>
+                                      </div>
                                 </div>
+
+                                {{-- <div class="row">
+                                  <div class="input-group col-md-4">
+                                      <input class="form-control py-2" type="search" value="search" id="example-search-input">
+                                      <span class="input-group-append">
+                                          <button class="btn btn-outline-secondary" type="button">
+                                              <i class="fa fa-search"></i>
+                                          </button>
+                                      </span>
+                                  </div>
+                              </div> --}}
+
         
                                 <div class="row mb-0">
                                     <div class="col-md-6 offset-md-4">
@@ -267,7 +377,6 @@
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
       </div>
    
-   
-  </div>
+
 
 @endsection

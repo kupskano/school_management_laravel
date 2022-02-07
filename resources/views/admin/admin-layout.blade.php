@@ -32,6 +32,8 @@
 
   <!-- summernote -->
   <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="../dist/css/toastr.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -92,10 +94,10 @@
     @yield('content')
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  {{-- <footer class="main-footer">
     <strong>Copyright &copy; 2021 <a href="#">John Doe Company</a>.</strong>
     All rights reserved.
-  </footer>
+  </footer> --}}
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -152,6 +154,37 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.6/dist/sweetalert2.all.min.js"></script>
+<script src="../dist/js/toastr.min.js"></script>
+<script src="../dist/js/disableUser.js"></script>
+<script>
+
+  const togglePasswordConfirm = document.querySelector("#togglePasswordConfirm");
+  const password_confirm  = document.querySelector("#password_confirm");
+
+  togglePasswordConfirm.addEventListener("click" , function(e) {
+    const type = password_confirm.getAttribute("type") === "password" ? "text" : "password";
+    password_confirm.setAttribute("type", type);
+     this.classList.toggle("fa-eye-slash");
+    e.preventDefault();
+
+  });
+  
+</script>
+<script>
+
+  const togglePassword = document.querySelector("#togglePassword");
+  const password  = document.querySelector("#password");
+
+  togglePassword.addEventListener("click" , function(e) {
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+     this.classList.toggle("fa-eye-slash");
+    e.preventDefault();
+
+  });
+  
+</script>
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -188,5 +221,34 @@
     }
   })
 </script>
+
+@if (Session::has('user_added'))
+    <script>
+      Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'User added',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    </script>
+@endif
+
+@if (Session::has('user_added')) 
+  <script>
+    toastr.success('Success', 'user added', {timeOut: 3000})
+  </script>
+@endif
+
+
+@if ($errors->has('email'))
+<script>
+  toastr.error('Error', 'Email exist', {
+    timeOut: 2000,
+    })
+</script>
+@endif
+
+
 </body>
 </html>
